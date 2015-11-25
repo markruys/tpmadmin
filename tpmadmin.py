@@ -103,11 +103,14 @@ class TPM:
 
     while True:
 
-      for item in self.get(path):
+      items = self.get(path)
+      req = self.req
+
+      for item in items:
         yield item
 
-      if self.req.links and self.req.links['next'] and self.req.links['next']['rel'] == 'next':
-        path = self.req.links['next']['url']
+      if req.links and req.links['next'] and req.links['next']['rel'] == 'next':
+        path = req.links['next']['url']
       else:
         break
 
