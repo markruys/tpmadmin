@@ -122,7 +122,7 @@ def main():
     parser.add_argument('--mode', choices=['export'], required=True,
                         help='export: exports all passwords in a CSV format')
     parser.add_argument('--url', dest='url', required=True,
-                       help='URL of TPM like https://tpm.mydomain.com/index.php')
+                       help='URL of TPM like https://tpm.mydomain.com/')
     parser.add_argument('--private-key', dest='private_key',
                        help='private key from the user settings in TPM', metavar='KEY')
     parser.add_argument('--public-key', dest='public_key',
@@ -135,7 +135,7 @@ def main():
                        help='unlock passwords', metavar='REASON')
     args = parser.parse_args()
 
-    tpm = TPM(args.url, 'v4')
+    tpm = TPM(args.url if args.url.endswith("/index.php") else (args.url + "index.php") if args.url.endswith("/") else (args.url + "/index.php"), 'v4')
     if args.private_key and args.public_key:
       tpm.hmac(args.private_key, args.public_key)
     elif args.user and args.password:
